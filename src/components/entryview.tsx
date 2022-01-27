@@ -1,13 +1,8 @@
-import {
-  Paper,
-  PaperClassKey,
-  StandardProps,
-  Typography,
-} from "@material-ui/core";
 import * as React from "react";
+import Paper, { PaperProps } from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
-interface EntryViewProps
-  extends StandardProps<React.HTMLAttributes<HTMLDivElement>, PaperClassKey> {
+interface EntryViewProps extends PaperProps {
   title: string;
   content: string;
 }

@@ -1,15 +1,12 @@
 import * as React from "react";
 import { connect, ConnectedProps, useDispatch } from "react-redux";
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
-import {
-  CircularProgress,
-  Container,
-  Theme,
-  createStyles,
-  makeStyles,
-} from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { styled } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import Container, { ContainerProps } from "@mui/material/Container";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 import { initializeWorkspace } from "../actions";
 import { RootState } from "../reducers";
@@ -19,38 +16,36 @@ import Sidebar from "../components/sidebar";
 import Home from "./home";
 import View1 from "./view1";
 
-/* Styles for the Material-UI items */
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    emptyContainer: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100%",
-    },
-    container: {
-      height: "100%",
-      display: "flex",
-      flexDirection: "row",
-    },
-    appBody: {
-      display: "flex",
-      flexDirection: "column",
-      flexGrow: 1,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-  })
-);
+const EmptyContainer = styled(Container)<ContainerProps>({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+});
+
+const ContainerDiv = styled("div")({
+  height: "100%",
+  display: "flex",
+  flexDirection: "row",
+});
+
+const AppBody = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+})
+
+const Content = styled("main")(({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+}));
+
 
 function Workspace(props: ConnectedProps<typeof connector>) {
   const { currentUser, errorMessage, initialized, currentWorkspace } = props;
-  const classes = useStyles();
   const dispatch = useDispatch();
-  const location = useLocation();
-  const background = location.state && location.state.background;
+  // const location = useLocation();
+  // const background = location.state && location.state.background;
 
   React.useEffect(() => {
     if (!initialized) {
@@ -60,39 +55,35 @@ function Workspace(props: ConnectedProps<typeof connector>) {
 
   if (errorMessage) {
     return (
-      <Container className={classes.emptyContainer}>
+      <EmptyContainer>
         <Alert severity="error">
           <AlertTitle>Fatal Error</AlertTitle>
           {props.errorMessage}
         </Alert>
-      </Container>
+      </EmptyContainer>
     );
   } else if (!initialized) {
     return (
-      <Container className={classes.emptyContainer}>
+      <EmptyContainer>
         <CircularProgress />
-      </Container>
+      </EmptyContainer>
     );
   }
 
   return (
-    <div className={classes.container}>
+    <ContainerDiv>
       <Sidebar workspace={currentWorkspace} />
-      <div className={classes.appBody}>
+      <AppBody>
         <Navbar user={currentUser} title="" />
-        <main className={classes.content}>
-          <Switch location={background || location}>
-            <Route path="/home">
-              <Home />
-            </Route>
-            <Route path="/view1">
-              <View1 />
-            </Route>
-            <Redirect to="/home" />
-          </Switch>
-        </main>
-      </div>
-    </div>
+        <Content>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/view1" element={<View1 />} />
+            <Route path="*" element={<Navigate replace to="/home" />} />
+          </Routes>
+        </Content>
+      </AppBody>
+    </ContainerDiv>
   );
 }
 

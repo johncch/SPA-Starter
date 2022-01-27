@@ -1,43 +1,30 @@
 import * as React from "react";
+// import { css } from "@emotion/react";
+import { styled } from '@mui/system';
 
-import {
-  AppBar,
-  Avatar,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-  Theme,
-  makeStyles,
-  createStyles,
-} from "@material-ui/core";
-import { deepOrange } from "@material-ui/core/colors";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { deepOrange } from "@mui/material/colors";
 
 import { User } from "../store/types";
 import { useAuth } from "../context/auth";
-
-/* Styles for the Material-UI items */
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    grow: {
-      flexGrow: 1,
-    },
-    orange: {
-      color: theme.palette.getContrastText(deepOrange[500]),
-      backgroundColor: deepOrange[500],
-    },
-  })
-);
 
 interface NavbarProps {
   title: string;
   user: User;
 }
 
+const Spacer = styled("div")`
+  flex-grow: 1;
+`
+
 function Navbar(props: NavbarProps) {
   const { user, title } = props;
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const authContext = useAuth();
@@ -58,7 +45,6 @@ function Navbar(props: NavbarProps) {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      getContentAnchorEl={null}
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       keepMounted
@@ -75,11 +61,14 @@ function Navbar(props: NavbarProps) {
     <React.Fragment>
       <AppBar position="relative">
         <Toolbar>
-          <Typography variant="h6">{title}</Typography>
-          <div className={classes.grow} />
-          <IconButton onClick={handleProfileMenuOpen}>
+          <Typography variant="h6">{title}ASDF</Typography>
+          <Spacer />
+          <IconButton onClick={handleProfileMenuOpen} size="large">
             <Avatar
-              className={classes.orange}
+              sx={{
+                color: (theme) => theme.palette.getContrastText(deepOrange[500]),
+                backgroundColor: deepOrange[500],
+              }}
               alt={user.fullname}
               src={user.url}
             ></Avatar>

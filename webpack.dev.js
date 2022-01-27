@@ -6,6 +6,7 @@ module.exports = merge(config, {
     plugins: [
         new DefinePlugin({
             "BASEURL": JSON.stringify("http://localhost:8081"),            
+            "LOCAL": false,
         }),
     ]
 })

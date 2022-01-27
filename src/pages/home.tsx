@@ -1,29 +1,18 @@
 import * as React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { Typography, makeStyles, Theme, createStyles } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
 import { RootState } from "../reducers";
 import { Entry } from "../store/types";
 import EntryView from "../components/entryview";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    header: {
-      marginBottom: theme.spacing(2),
-    },
-    entry: {
-      padding: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-    },
-  })
-);
-
 function Home(props: ConnectedProps<typeof connector>) {
   const { entries } = props;
-  const classes = useStyles();
 
   return (
     <React.Fragment>
-      <Typography variant="h4" className={classes.header}>
+      <Typography variant="h4" sx={{
+        marginBottom: 2,
+      }}>
         Home
       </Typography>
       {entries.map((entry, index) => (
@@ -31,7 +20,10 @@ function Home(props: ConnectedProps<typeof connector>) {
           key={index}
           title={entry.title}
           content={entry.content}
-          className={classes.entry}
+          sx={{
+            padding: 2,
+            marginBottom: 2,
+          }}
         />
       ))}
     </React.Fragment>

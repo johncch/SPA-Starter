@@ -1,14 +1,13 @@
 import * as React from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Paper,
-  Grid,
-  Container,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+
 import * as Yup from "yup";
 import { Link as RouterLink } from "react-router-dom";
 import { Formik, Form } from "formik";

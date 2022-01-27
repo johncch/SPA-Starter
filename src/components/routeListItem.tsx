@@ -1,8 +1,11 @@
 import * as React from "react";
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+
 import {
   NavLink as RouterLink,
-  LinkProps as RouterLinkProps,
+  NavLinkProps as RouterLinkProps,
 } from "react-router-dom";
 
 interface RouteListItemProps {

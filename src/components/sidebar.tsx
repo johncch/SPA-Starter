@@ -1,15 +1,11 @@
 import * as React from "react";
+import { styled } from "@mui/material/styles";
 
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Paper,
-  Button,
-  List,
-  Divider,
-  Typography,
-} from "@material-ui/core";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 
 import RouteListItem from "./routeListItem";
 import { Workspace } from "../store/types";
@@ -21,48 +17,45 @@ interface SidebarProps {
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    drawer: {
-      display: "flex",
-      [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    toolbar: {
-      ...theme.mixins.toolbar,
-      paddingLeft: theme.spacing(2),
-      display: "flex",
-      alignItems: "center",
-    },
-    buttonWrapper: {
-      paddingLeft: theme.spacing(2),
-      paddingTop: theme.spacing(3),
-    },
-  })
-);
+const SidebarEl = styled("nav")(({ theme }) => ({
+  display: "flex",
+  flexShrink: 1,
+  [theme.breakpoints.up("sm")]: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+}));
+
+const Toolbar = styled("div")(({ theme }) => ({
+  ...theme.mixins.toolbar,
+  paddingLeft: theme.spacing(2),
+  display: "flex",
+  alignItems: "center",
+}));
+
+const ButtonWrapper = styled("div")(({ theme }) => ({
+  paddingLeft: theme.spacing(2),
+  paddingTop: theme.spacing(3),
+}));
 
 function Sidebar(props: SidebarProps) {
   const { workspace } = props;
-  const classes = useStyles();
   let location = useLocation();
 
   return (
-    <nav className={classes.drawer}>
-      <Paper className={classes.drawerPaper}>
-        <div className={classes.toolbar}>
+    <SidebarEl>
+      <Paper sx={{
+        width: drawerWidth
+      }}>
+        <Toolbar>
           <Typography variant="h6">{workspace.name}</Typography>
-        </div>
+        </Toolbar>
         <Divider />
-        <div className={classes.buttonWrapper}>
+        <ButtonWrapper>
           <Button variant="contained" color="primary">
             Create
           </Button>
-        </div>
+        </ButtonWrapper>
         <List>
           {[
             { text: "Home", path: "/home" },
@@ -77,7 +70,7 @@ function Sidebar(props: SidebarProps) {
           ))}
         </List>
       </Paper>
-    </nav>
+    </SidebarEl>
   );
 }
 
