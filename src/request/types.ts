@@ -1,41 +1,41 @@
-import { User, Workspace, Entry } from "../store/types";
+import { User, Workspace, Entry } from "../app/types"
 
 // Param Types
 
 export interface SignUpParams {
-  email: string;
-  password: string;
-  fullName: string;
+    email: string
+    password: string
+    fullName: string
 }
 
 export interface SignInParams {
-  email: string;
-  password: string;
+    email: string
+    password: string
 }
 
 export interface GetEntriesParams {
-  workspaceId: string;
+    workspaceId: string
 }
 
 // Response Types
 
 export interface UserResponse {
-  user: User;
+    user: User
 }
 
 export interface WorkspacesResponse {
-  workspaces: Array<Workspace>;
-  currentWorkspaceID: string;
+    workspaces: Array<Workspace>
+    currentWorkspaceID: string
 }
 
 export interface EntriesResponse {
-  entries: Entry[];
+    entries: Entry[]
 }
 
 export interface EntryResponse {
-  entry: Entry;
+    entry: Entry
 }
 
 export interface AuthResponse extends UserResponse, WorkspacesResponse {
-  currentWorkspaceID: string;
+    currentWorkspaceID: string
 }
