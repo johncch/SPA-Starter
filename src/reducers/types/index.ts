@@ -1,4 +1,6 @@
-export * from "./workspace"
+/**
+ * Types for the objects that reducers use inside the Redux store.
+ */
 
 export enum Status {
     Initial = "initial",

@@ -17,7 +17,6 @@ function Home(props: ConnectedProps<typeof connector>) {
         }
     }, [entries])
 
-    console.log(entries, workspaceId)
     return (
         <React.Fragment>
             <Typography

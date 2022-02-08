@@ -1,12 +1,7 @@
 import * as React from "react"
 import { connect, ConnectedProps } from "react-redux"
 import { Route, Routes, Navigate, useLocation } from "react-router-dom"
-
 import { styled } from "@mui/material/styles"
-import CircularProgress from "@mui/material/CircularProgress"
-import Container, { ContainerProps } from "@mui/material/Container"
-import Alert from "@mui/material/Alert"
-import AlertTitle from "@mui/material/AlertTitle"
 
 import { fetchCurrentUserIfNeeded, fetchWorkspacesIfNeeded } from "../actions"
 
@@ -16,13 +11,8 @@ import Home from "./home"
 import View1 from "./view1"
 import { useAppDispatch } from "../app/hook"
 import { RootState } from "../app/store"
-
-const EmptyContainer = styled(Container)<ContainerProps>({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-})
+import ErrorBoundary from "../components/errorboundary"
+import LoadingView from "../components/loadingview"
 
 const ContainerDiv = styled("div")({
     height: "100%",
@@ -58,39 +48,26 @@ function Workspace(props: ConnectedProps<typeof connector>) {
         }
     }, [currentWorkspace])
 
-    if (errorMessage) {
-        return (
-            <EmptyContainer>
-                <Alert severity="error">
-                    <AlertTitle>Fatal Error</AlertTitle>
-                    {props.errorMessage}
-                </Alert>
-            </EmptyContainer>
-        )
-    } else if (!(currentUser && currentWorkspace)) {
-        return (
-            <EmptyContainer>
-                <CircularProgress />
-            </EmptyContainer>
-        )
-    }
-
     return (
         <ContainerDiv>
-            <Sidebar workspace={currentWorkspace} />
-            <AppBody>
-                <Navbar user={currentUser} title="" />
-                <Content>
-                    <Routes>
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/view1" element={<View1 />} />
-                        <Route
-                            path="*"
-                            element={<Navigate replace to="/home" />}
-                        />
-                    </Routes>
-                </Content>
-            </AppBody>
+            <ErrorBoundary errorMessage={errorMessage}>
+                <LoadingView loading={!(currentUser && currentWorkspace)}>
+                    <Sidebar workspace={currentWorkspace} />
+                    <AppBody>
+                        <Navbar user={currentUser} title="" />
+                        <Content>
+                            <Routes>
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/view1" element={<View1 />} />
+                                <Route
+                                    path="*"
+                                    element={<Navigate replace to="/home" />}
+                                />
+                            </Routes>
+                        </Content>
+                    </AppBody>
+                </LoadingView>
+            </ErrorBoundary>
         </ContainerDiv>
     )
 }
