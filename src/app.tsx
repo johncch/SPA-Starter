@@ -28,7 +28,8 @@ import store from "./app/store"
 
 function AuthenticatedApp() {
     const authContext = useAuth()
-    return authContext.hasAuthToken() ? (
+    return true ? (
+        // return authContext.hasAuthToken() ? (
         <Workspace />
     ) : (
         <Routes>

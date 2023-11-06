@@ -1,5 +1,5 @@
-import * as React from "react";
-import { setAuthorizationHeader } from "../request";
+import * as React from "react"
+import { setAuthorizationHeader } from "../request"
 
 /**
  * The way authentication works is that it relies on a JWT token that is
@@ -8,47 +8,48 @@ import { setAuthorizationHeader } from "../request";
  */
 
 type AuthContextProps = {
-  hasAuthToken: () => boolean;
-  setAuthToken: (token: string) => void;
-  clearAuthToken: () => void;
-};
-
-const AuthContext = React.createContext<AuthContextProps>(null);
-const AUTH_TOKEN_KEY = "authToken";
-
-const AuthProvider: React.FunctionComponent = (props) => {
-  const lsToken = localStorage.getItem(AUTH_TOKEN_KEY);
-  const [token, setToken] = React.useState(lsToken);
-  if (lsToken) {
-    setAuthorizationHeader(lsToken);
-  }
-
-  function hasAuthToken() {
-    return Boolean(token);
-  }
-
-  function setAuthToken(newToken: string) {
-    localStorage.setItem(AUTH_TOKEN_KEY, newToken);
-    setToken(newToken);
-    setAuthorizationHeader(newToken);
-  }
-
-  function clearAuthToken() {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-    setToken(null);
-    setAuthorizationHeader("");
-  }
-
-  return (
-    <AuthContext.Provider
-      value={{ hasAuthToken, setAuthToken, clearAuthToken }}
-      {...props}
-    />
-  );
-};
-
-function useAuth(): AuthContextProps {
-  return React.useContext(AuthContext);
+    hasAuthToken: () => boolean
+    setAuthToken: (token: string) => void
+    clearAuthToken: () => void
 }
 
-export { AuthProvider, useAuth };
+const AuthContext = React.createContext<AuthContextProps>(null)
+const AUTH_TOKEN_KEY = "authToken"
+
+const AuthProvider = (props: { children?: React.ReactNode }) => {
+    const lsToken = localStorage.getItem(AUTH_TOKEN_KEY)
+    const [token, setToken] = React.useState(lsToken)
+    if (lsToken) {
+        setAuthorizationHeader(lsToken)
+    }
+
+    function hasAuthToken() {
+        return Boolean(token)
+    }
+
+    function setAuthToken(newToken: string) {
+        localStorage.setItem(AUTH_TOKEN_KEY, newToken)
+        setToken(newToken)
+        setAuthorizationHeader(newToken)
+    }
+
+    function clearAuthToken() {
+        localStorage.removeItem(AUTH_TOKEN_KEY)
+        setToken(null)
+        setAuthorizationHeader("")
+    }
+
+    return (
+        <AuthContext.Provider
+            value={{ hasAuthToken, setAuthToken, clearAuthToken }}
+        >
+            {props.children}
+        </AuthContext.Provider>
+    )
+}
+
+function useAuth(): AuthContextProps {
+    return React.useContext(AuthContext)
+}
+
+export { AuthProvider, useAuth }
